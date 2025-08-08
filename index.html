@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aesthetic To-Do List</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --baby-pink: #F8C8DC; /* A soft baby pink */
+            --light-pink: #FFDAE9;
+            --darker-pink: #E0B0C8;
+            --text-color: #333;
+            --white: #FFFFFF;
+            --border-radius: 12px;
+            --box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--white);
+            display: flex;
+            justify-content: center;
+            align-items: flex-start; /* Align to the top for Notion embed */
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+            box-sizing: border-box;
+            color: var(--text-color);
+            overflow-y: auto; /* Enable scrolling if content overflows */
+        }
+
+        .container {
+            background-color: var(--white);
+            padding: 30px 40px;
+            border-radius: var(--border-radius);
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 600px;
+            position: relative;
+            overflow: hidden;
+            border: 1px solid var(--baby-pink); /* Subtle pink border */
+        }
+
+        /* Subtle bow pattern in background (optional) */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('YOUR_BOW_IMAGE_URL_HERE'); /* REPLACE WITH YOUR BOW IMAGE URL */
+            background-repeat: repeat;
+            background-size: 50px; /* Adjust size of the bow pattern */
+            opacity: 0.05; /* Very subtle */
+            pointer-events: none; /* Make sure it doesn't interfere with interactions */
+            z-index: 0;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--baby-pink);
+            margin-bottom: 25px;
+            font-weight: 600;
+            letter-spacing: 1px;
+            position: relative;
+            z-index: 1; /* Ensure text is above background pattern */
+        }
+
+        .progress-section {
+            margin-bottom: 25px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .progress-label {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.95em;
+            margin-bottom: 8px;
+            font-weight: 400;
+            color: var(--darker-pink);
+        }
+
+        .progress-bar-container {
+            width: 100%;
+            background-color: var(--light-pink);
+            border-radius: 10px;
+            height: 12px;
+            overflow: hidden;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 0%;
+            background-color: var(--baby-pink);
+            border-radius: 10px;
+            transition: width 0.4s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding-right: 5px;
+            box-sizing: border-box;
+        }
+
+        .input-section {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .input-section input[type="text"] {
+            flex-grow: 1;
+            padding: 12px 15px;
+            border: 1px solid var(--light-pink);
+            border-radius: 8px;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            outline: none;
+            transition: border-color 0.3s ease;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        .input-section input[type="text"]:focus {
+            border-color: var(--baby-pink);
+            box-shadow: 0 2px 8px rgba(248, 200, 220, 0.4);
+        }
+
+        .input-section button {
+            padding: 12px 20px;
+            background-color: var(--baby-pink);
+            color: var(--white);
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-family: 'Poppins', sans-serif;
+            font-size: 1em;
+            font-weight: 600;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 4px 10px rgba(248, 200, 220, 0.3);
+        }
+
+        .input-section button:hover {
+            background-color: var(--darker-pink);
+            transform: translateY(-2px);
+        }
+
+        .todo-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .todo-list li {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background-color: var(--light-pink);
+            padding: 12px 18px;
+            margin-bottom: 12px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .todo-list li.completed {
+            background-color: var(--darker-pink);
+            color: var(--white);
+            text-decoration: line-through;
+            opacity: 0.8;
+        }
+
+        .todo-list li:hover {
+            transform: translateX(5px);
+        }
+
+        .todo-list li .task-text {
+            flex-grow: 1;
+            margin-left: 10px;
+            cursor: pointer;
+        }
+
+        .todo-list li input[type="checkbox"] {
+            appearance: none;
+            -webkit-appearance: none;
+            width: 20px;
+            height: 20px;
+            border: 2px solid var(--baby-pink);
+            border-radius: 4px;
+            cursor: pointer;
+            position: relative;
+            outline: none;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .todo-list li input[type="checkbox"]:checked {
+            background-color: var(--baby-pink);
+            border-color: var(--baby-pink);
+        }
+
+        .todo-list li input[type="checkbox"]:checked::after {
+            content: '✔';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--white);
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        .todo-list li.completed input[type="checkbox"] {
+            border-color: var(--white);
+        }
+
+        .todo-list li.completed input[type="checkbox"]:checked {
+            background-color: var(--white);
+            border-color: var(--white);
+        }
+
+        .todo-list li.completed input[type="checkbox"]:checked::after {
+            color: var(--darker-pink);
+        }
+
+        .todo-list li button {
+            background: none;
+            border: none;
+            color: var(--baby-pink);
+            font-size: 1.2em;
+            cursor: pointer;
+            margin-left: 15px;
+            transition: color 0.3s ease, transform 0.2s ease;
+        }
+
+        .todo-list li.completed button {
+            color: var(--white);
+        }
+
+        .todo-list li button:hover {
+            color: var(--darker-pink);
+            transform: scale(1.1);
+        }
+
+        /* Scrollbar for the list if it gets too long */
+        .todo-list-container {
+            max-height: 400px; /* Adjust as needed */
+            overflow-y: auto;
+            padding-right: 10px; /* Space for scrollbar */
+        }
+
+        .todo-list-container::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .todo-list-container::-webkit-scrollbar-track {
+            background: var(--light-pink);
+            border-radius: 10px;
+        }
+
+        .todo-list-container::-webkit-scrollbar-thumb {
+            background: var(--baby-pink);
+            border-radius: 10px;
+        }
+
+        .todo-list-container::-webkit-scrollbar-thumb:hover {
+            background: var(--darker-pink);
+        }
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎀 My Aesthetic To-Do List 🎀</h1>
+
+        <div class="progress-section">
+            <div class="progress-label">
+                <span>Progress</span>
+                <span id="progress-percentage">0%</span>
+            </div>
+            <div class="progress-bar-container">
+                <div class="progress-bar" id="progress-bar"></div>
+            </div>
+        </div>
+
+        <div class="input-section">
+            <input type="text" id="new-task-input" placeholder="Add a new cute task...">
+            <button id="add-task-button">Add Task</button>
+        </div>
+
+        <div class="todo-list-container">
+            <ul class="todo-list" id="todo-list">
+                </ul>
+        </div>
+    </div>
+
+    <script>
+        const newTaskInput = document.getElementById('new-task-input');
+        const addTaskButton = document.getElementById('add-task-button');
+        const todoList = document.getElementById('todo-list');
+        const progressBar = document.getElementById('progress-bar');
+        const progressPercentage = document.getElementById('progress-percentage');
+
+        // Load tasks from localStorage
+        let tasks = JSON.parse(localStorage.getItem('todoTasks')) || [];
+
+        function saveTasks() {
+            localStorage.setItem('todoTasks', JSON.stringify(tasks));
+        }
+
+        function renderTasks() {
+            todoList.innerHTML = ''; // Clear existing list
+            tasks.forEach((task, index) => {
+                const li = document.createElement('li');
+                li.className = task.completed ? 'completed' : '';
+                li.innerHTML = `
+                    <input type="checkbox" ${task.completed ? 'checked' : ''} data-index="${index}">
+                    <span class="task-text" data-index="${index}">${task.text}</span>
+                    <button class="delete-button" data-index="${index}">✖</button>
+                `;
+                todoList.appendChild(li);
+            });
+            updateProgressBar();
+        }
+
+        function addTask() {
+            const taskText = newTaskInput.value.trim();
+            if (taskText !== '') {
+                tasks.push({ text: taskText, completed: false });
+                newTaskInput.value = '';
+                saveTasks();
+                renderTasks();
+            }
+        }
+
+        function toggleTaskCompletion(index) {
+            tasks[index].completed = !tasks[index].completed;
+            saveTasks();
+            renderTasks();
+        }
+
+        function deleteTask(index) {
+            tasks.splice(index, 1);
+            saveTasks();
+            renderTasks();
+        }
+
+        function updateProgressBar() {
+            const totalTasks = tasks.length;
+            const completedTasks = tasks.filter(task => task.completed).length;
+            let percentage = 0;
+            if (totalTasks > 0) {
+                percentage = (completedTasks / totalTasks) * 100;
+            }
+            progressBar.style.width = percentage.toFixed(0) + '%';
+            progressPercentage.textContent = percentage.toFixed(0) + '%';
+        }
+
+        // Event Listeners
+        addTaskButton.addEventListener('click', addTask);
+        newTaskInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                addTask();
+            }
+        });
+
+        todoList.addEventListener('click', (e) => {
+            if (e.target.type === 'checkbox') {
+                const index = parseInt(e.target.dataset.index);
+                toggleTaskCompletion(index);
+            } else if (e.target.classList.contains('delete-button')) {
+                const index = parseInt(e.target.dataset.index);
+                deleteTask(index);
+            } else if (e.target.classList.contains('task-text')) {
+                 // Option to toggle completion by clicking text
+                const index = parseInt(e.target.dataset.index);
+                toggleTaskCompletion(index);
+            }
+        });
+
+        // Initial render when page loads
+        renderTasks();
+    </script>
+</body>
+</html>
