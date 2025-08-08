@@ -17,7 +17,7 @@
         }
 
         body {
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', sans-serif; /* Applied Poppins to body for overall consistency */
             background-color: var(--white);
             display: flex;
             justify-content: center;
@@ -118,7 +118,7 @@
             padding: 12px 15px;
             border: 1px solid var(--light-pink);
             border-radius: 8px;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', sans-serif; /* Ensuring Poppins for input */
             font-size: 1em;
             outline: none;
             transition: border-color 0.3s ease;
@@ -137,7 +137,7 @@
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            font-family: 'Poppins', sans-serif;
+            font-family: 'Poppins', sans-serif; /* Ensuring Poppins for button */
             font-size: 1em;
             font-weight: 600;
             transition: background-color 0.3s ease, transform 0.2s ease;
@@ -167,6 +167,7 @@
             border-radius: 8px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
             transition: background-color 0.3s ease, transform 0.2s ease;
+            font-family: 'Poppins', sans-serif; /* Ensuring Poppins for list items */
         }
 
         .todo-list li.completed {
@@ -236,6 +237,7 @@
             cursor: pointer;
             margin-left: 15px;
             transition: color 0.3s ease, transform 0.2s ease;
+            font-family: 'Poppins', sans-serif; /* Ensuring Poppins for delete button */
         }
 
         .todo-list li.completed button {
@@ -276,7 +278,7 @@
 </head>
 <body>
     <div class="container">
-        <h1>🎀 My Aesthetic To-Do List 🎀</h1>
+        <h1>🎀 My To-Do List 🎀</h1>
 
         <div class="progress-section">
             <div class="progress-label">
@@ -289,7 +291,7 @@
         </div>
 
         <div class="input-section">
-            <input type="text" id="new-task-input" placeholder="Add a new cute task...">
+            <input type="text" id="new-task-input" placeholder="Add a new task...">
             <button id="add-task-button">Add Task</button>
         </div>
 
